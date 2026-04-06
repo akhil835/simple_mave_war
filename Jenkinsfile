@@ -1,6 +1,10 @@
 pipeline {
  agent any
 
+ tools {
+ maven 'Maven3'
+ }
+
  parameters {
  string(name: 'env', defaultValue: 'dev', description: 'Deployment Environment')
  string(name: 'region', defaultValue: 'us-east-1', description: 'AWS Region')

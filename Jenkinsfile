@@ -1,4 +1,4 @@
-﻿pipeline {
+pipeline {
     agent any
 
     parameters {
@@ -11,28 +11,18 @@
         MAVEN_OPTS = '-Xmx512m'
     }
 
-    tools {
-        maven 'Maven'
-        jdk 'JDK'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                echo "Checking out branch: ${params.branch}"
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: "*/${params.branch}"]],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/akhil835/simple_mave_war.git'
-                    ]]
-                ])
+                echo "Checking out branch: \"
+                git branch: "\",
+                    url: 'https://github.com/akhil835/simple_mave_war.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo "Building Maven project for environment: ${params.env}"
+                echo "Building Maven project for environment: \"
                 sh 'mvn clean compile -B'
             }
         }
@@ -59,16 +49,15 @@
 
         stage('Deploy') {
             steps {
-                echo "Deploying to environment: ${params.env} in region: ${params.region}"
-                echo 'Maven deployment step - WAR file deployment'
-                sh 'mvn deploy -DskipTests -B -Denv=${params.env} -Dregion=${params.region} || echo "Deploy phase completed (no remote repo configured)"'
+                echo "Deploying to environment: \ in region: \"
+                sh "mvn deploy -DskipTests -B -Denv=\ -Dregion=\ || echo 'Deploy phase completed (no remote repo configured)'"
             }
         }
     }
 
     post {
         success {
-            echo "Pipeline completed successfully for env: ${params.env}"
+            echo "Pipeline completed successfully for env: \"
         }
         failure {
             echo 'Pipeline failed! Check the logs for details.'
